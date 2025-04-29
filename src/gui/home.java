@@ -6,14 +6,12 @@ package gui;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import model.SpellChecker;
 
 /**
  *
  * @author Oshen Sathsara <oshensathsara2003@gmail.com>
  */
-
 public class Home extends javax.swing.JFrame {
 
     private SpellChecker spellChecker;
@@ -75,6 +73,7 @@ public class Home extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jButton1.setText("Check spellings");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -118,19 +117,16 @@ public class Home extends javax.swing.JFrame {
         String text = jTextField1.getText().trim();
 
         if (text.isEmpty()) {
-            JOptionPane.showMessageDialog(
-                    this, "please enter a word", "Warning", JOptionPane.WARNING_MESSAGE);
+            ToastDialog.showToast(this, "Warning", "Please enter a word", ToastDialog.WARNING_COLOR);
             return;
         }
 
         boolean correctWord = spellChecker.isWordCorrect(text);
 
         if (correctWord) {
-           JOptionPane.showMessageDialog(
-                    this, "Correct Spelling", "Result", JOptionPane.INFORMATION_MESSAGE);
+            ToastDialog.showToast(this, "Success", "Correct Spelling", ToastDialog.SUCCESS_COLOR);
         } else {
-            JOptionPane.showMessageDialog(
-                    this, "Incorrect spelling", "Wrong", JOptionPane.ERROR_MESSAGE);
+            ToastDialog.showToast(this, "Error", "Incorrect Spelling", ToastDialog.ERROR_COLOR);
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
