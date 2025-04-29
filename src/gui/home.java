@@ -6,36 +6,37 @@ package gui;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import model.SpellChecker;
 
 /**
  *
- * @author User
+ * @author Oshen Sathsara <oshensathsara2003@gmail.com>
  */
-public class home extends javax.swing.JFrame {
 
-    /**
-     * Creates new form home
-     */
-    public home() {
+public class Home extends javax.swing.JFrame {
+
+    private SpellChecker spellChecker;
+
+    public Home() {
         initComponents();
         resizeHeaderImage();
+
+        spellChecker = new SpellChecker();
 
     }
 
     private void resizeHeaderImage() {
-        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/img/header.png"));
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/resources/img/header.png"));
 
-       
         int labelWidth = jLabel1.getWidth();
         int labelHeight = jLabel1.getHeight();
 
-        
         if (labelWidth <= 0 || labelHeight <= 0) {
             labelWidth = 795;
             labelHeight = 112;
         }
 
-        
         ImageIcon resizedIcon = resizeImageIcon(originalIcon, labelWidth, labelHeight);
 
         jLabel1.setIcon(resizedIcon);
@@ -63,7 +64,7 @@ public class home extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Spell checker");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/header.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/img/header.png"))); // NOI18N
 
         jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -74,6 +75,11 @@ public class home extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jButton1.setText("Check spellings");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -82,7 +88,7 @@ public class home extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(112, 112, 112)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 795, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(119, 119, 119))
@@ -91,8 +97,8 @@ public class home extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(125, 125, 125)
                 .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                 .addGap(63, 63, 63)
                 .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
@@ -104,46 +110,71 @@ public class home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        String text = jTextField1.getText().trim();
+
+        if (text.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this, "please enter a word", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        boolean correctWord = spellChecker.isWordCorrect(text);
+
+        if (correctWord) {
+           JOptionPane.showMessageDialog(
+                    this, "Correct Spelling", "Result", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(
+                    this, "Incorrect spelling", "Wrong", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-public static void main(String args[]) {
-   
-    try {
-        com.formdev.flatlaf.FlatLightLaf.setup(); 
-
-    } catch (Exception ex) {
-        System.err.println("Failed to initialize FlatLaf");
-        
-     
+    public static void main(String args[]) {
+        /* Set the FlatLaf look and feel */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex2) {
-            java.util.logging.Logger.getLogger(home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex2);
-        } catch (InstantiationException ex2) {
-            java.util.logging.Logger.getLogger(home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex2);
-        } catch (IllegalAccessException ex2) {
-            java.util.logging.Logger.getLogger(home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex2);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex2) {
-            java.util.logging.Logger.getLogger(home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex2);
-        }
-    }
+            com.formdev.flatlaf.FlatLightLaf.setup(); // Light theme
+            // Alternative themes:
+            // com.formdev.flatlaf.FlatDarkLaf.setup(); // Dark theme
+            // com.formdev.flatlaf.FlatIntelliJLaf.setup(); // IntelliJ light theme
+            // com.formdev.flatlaf.FlatDarculaLaf.setup(); // IntelliJ dark theme
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize FlatLaf");
 
-    /* Create and display the form */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-        public void run() {
-            new home().setVisible(true);
+            // Fall back to Nimbus as in your original code
+            try {
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
+                }
+            } catch (ClassNotFoundException ex2) {
+                java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex2);
+            } catch (InstantiationException ex2) {
+                java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex2);
+            } catch (IllegalAccessException ex2) {
+                java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex2);
+            } catch (javax.swing.UnsupportedLookAndFeelException ex2) {
+                java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex2);
+            }
         }
-    });
-}
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Home().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
